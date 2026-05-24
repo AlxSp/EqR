@@ -33,10 +33,20 @@ Code for reproducing EqR experiments on Sudoku-Extreme and Maze-Unique.
 ## Setup
 
 ```bash
+uv sync
+```
+
+Alternatively, create a virtual environment explicitly and install from
+`requirements.txt`:
+
+```bash
 uv venv
 source .venv/bin/activate
 uv pip install -r requirements.txt
 ```
+
+Use `uv run` to execute project commands, or activate the environment with
+`source .venv/bin/activate`.
 
 `adam-atan2` must install its CUDA backend (`adam_atan2_backend`); a
 Python-only install is not sufficient for training. Build it in an environment
@@ -52,9 +62,9 @@ where CUDA and Python headers are available:
 # Examples: H100=9.0, A100=8.0, RTX 4090/L40=8.9.
 # export TORCH_CUDA_ARCH_LIST=9.0
 
-python -m pip install --no-build-isolation --no-cache-dir --force-reinstall \
+uv pip install --no-build-isolation --no-cache-dir --force-reinstall \
   adam-atan2==0.0.3
-python - <<'PY'
+uv run python - <<'PY'
 from adam_atan2 import AdamATan2
 import adam_atan2_backend
 print(AdamATan2, adam_atan2_backend.__file__)
@@ -72,8 +82,8 @@ EqR follows the HRM attention import pattern: prefer FlashAttention-3 via
 local wheel is available:
 
 ```bash
-python -m pip install --no-deps <path-to-flash-attn-3-wheel.whl>
-python - <<'PY'
+uv pip install --no-deps <path-to-flash-attn-3-wheel.whl>
+uv run python - <<'PY'
 import flash_attn_interface
 print(flash_attn_interface.__file__)
 PY
@@ -82,8 +92,8 @@ PY
 If FlashAttention-3 is unavailable, install FlashAttention-2:
 
 ```bash
-python -m pip install flash-attn --no-build-isolation
-python - <<'PY'
+uv pip install flash-attn --no-build-isolation
+uv run python - <<'PY'
 from flash_attn import flash_attn_func
 print(flash_attn_func)
 PY
